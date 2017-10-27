@@ -5,10 +5,12 @@ require_once("upload.php");
 $file = new Upload();
 
 if (isset($_POST["upload"]) && count($_POST["upload"]) > 0) {
-    if ($file->fileUpload($_FILES["file"], "images/") === true) {
-        echo $file->getFinallyName();
-    } else {
-        echo $file->getErrorMsg();
+    foreach ($_FILES["file"]["name"] as $key => $value) {
+        if ($file->fileUpload($_FILES["file"], "images/", false, $key) === true) {
+            echo $file->getFinallyName();
+        } else {
+            echo $file->getErrorMsg();
+        }
     }
 }
 
@@ -37,7 +39,7 @@ if (isset($_POST["upload"]) && count($_POST["upload"]) > 0) {
                 <div class="col-lg-6">
                     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" id="my-awesome-dropzone" method="POST" enctype="multipart/form-data" autocomplete="off">
                         <div class="form-group fallback">
-                            <input type="file" name="file" id="file" class="form-control" required>
+                            <input type="file" name="file[]" id="file" class="form-control" required multiple>
                         </div>
                         <div class="form-group">
                             <input type="submit" value="Upload" name="upload" class="form-control btn btn-success">

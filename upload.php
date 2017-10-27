@@ -4,12 +4,20 @@ class Upload {
     private $FinallyName;
     private $ErrorMsg;
 
-    public function fileUpload($file, $destinationFolder, $chosenName = false, $limitSize = 1000000, $allowed = array("jpg", "jpeg", "png", "gif")) {
-        $fileName    = $file["name"];
-        $fileTmpName = $file["tmp_name"];
-        $fileSize    = $file["size"];
-        $fileError   = $file["error"];
-        $fileType    = $file["type"];
+    public function fileUpload($file, $destinationFolder, $chosenName = false, $key = false, $limitSize = 1000000, $allowed = array("jpg", "jpeg", "png", "gif")) {
+        if ($key === false) {
+            $fileName    = $file["name"];
+            $fileTmpName = $file["tmp_name"];
+            $fileSize    = $file["size"];
+            $fileError   = $file["error"];
+            $fileType    = $file["type"];
+        } else {
+            $fileName    = $file["name"][$key];
+            $fileTmpName = $file["tmp_name"][$key];
+            $fileSize    = $file["size"][$key];
+            $fileError   = $file["error"][$key];
+            $fileType    = $file["type"][$key];
+        }
 
         $fileExt = explode('.', $fileName);
         $fileActualExt = strtolower(end($fileExt));
